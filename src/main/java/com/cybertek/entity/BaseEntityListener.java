@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
-
+//
 public class BaseEntityListener extends AuditingEntityListener {
 
     @PrePersist
@@ -20,9 +20,9 @@ public class BaseEntityListener extends AuditingEntityListener {
         baseEntity.setLastUpdateUserId(1L);//bu iki satiri koymazsak alttaki if e gidiginde false olacak
 
         if(authentication !=null && !authentication.getName().equals("anonymousUser")){//valid user demek
-            Object principal = authentication.getPrincipal();
-            baseEntity.setInsertUserId(((UserPrincipal) principal).getId());
-            baseEntity.setLastUpdateUserId(((UserPrincipal) principal).getId());
+            long id = Long.parseLong(authentication.getName());//it will bring id
+            baseEntity.setInsertUserId(id);
+            baseEntity.setLastUpdateUserId(id);
         }
     }
 
@@ -34,8 +34,8 @@ public class BaseEntityListener extends AuditingEntityListener {
         baseEntity.setLastUpdateDateTime(LocalDateTime.now());
         baseEntity.setLastUpdateUserId(1L);
         if(authentication !=null && !authentication.getName().equals("anonymousUser")){
-            Object principal = authentication.getPrincipal();
-            baseEntity.setLastUpdateUserId(((UserPrincipal) principal).getId());
+           long id = Long.parseLong(authentication.getName());
+           baseEntity.setLastUpdateUserId(id);
         }
     }
 }
